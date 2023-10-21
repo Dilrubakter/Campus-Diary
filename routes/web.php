@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TimeScheduleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::prefix('dashboard')->group(function () {
+    Route::prefix('time-schedule')->group(function () {
+        Route::get('/', [TimeScheduleController::class, 'index'])->name('backend.timeschedule');
+        Route::get('/create', [TimeScheduleController::class, 'create'])->name('backend.timeschedule.create');
+        Route::post('/', [TimeScheduleController::class, 'store'])->name('backend.timeschedule');
+        Route::delete('/records/{id}', [TimeScheduleController::class, 'delete'])->name('records.delete');
+    });
 });
 
 require __DIR__.'/auth.php';
