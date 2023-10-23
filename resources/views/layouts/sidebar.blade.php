@@ -376,9 +376,9 @@
                 <li>
                   <a
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
-                    href="form-layout.html"
-                    :class="page === 'formLayout' && '!text-white'"
-                    >Form Layout</a
+                    href="{{ route('backend.day') }}"
+                    :class="page === 'formElements' && '!text-white'"
+                    >Day</a
                   >
                 </li>
               </ul>
