@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TimeScheduleController;
-
+use App\Http\Controllers\DayController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,12 +32,28 @@ Route::middleware('auth')->group(function () {
 
 
 Route::prefix('dashboard')->group(function () {
+
+    /**
+     * Admin Settings >> Time Schedule Routes
+     */
     Route::prefix('time-schedule')->group(function () {
         Route::get('/', [TimeScheduleController::class, 'index'])->name('backend.timeschedule');
         Route::get('/create', [TimeScheduleController::class, 'create'])->name('backend.timeschedule.create');
         Route::post('/', [TimeScheduleController::class, 'store'])->name('backend.timeschedule');
         Route::delete('/records/{id}', [TimeScheduleController::class, 'delete'])->name('records.delete');
     });
+
+    /**
+     * Admin Settings >> Day Routes
+     */
+
+     Route::prefix('day')->group(function () {
+        Route::get('/', [DayController::class, 'index'])->name('backend.day');
+        Route::post('/', [DayController::class, 'store'])->name('backend.day');
+        Route::get('/create', [DayController::class, 'create'])->name('backend.day.create');
+     });
+
+
 });
 
 require __DIR__.'/auth.php';
