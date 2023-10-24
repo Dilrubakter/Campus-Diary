@@ -128,6 +128,23 @@
                             </div>
                             @enderror
                           </div>
+                          <div>
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                              Gender <span class="text-meta-1">*</span>
+                            </label>
+                            <div class="relative z-20 bg-white dark:bg-form-input">
+                              <select class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input" name="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                              </select>
+                            </div>
+                            @error('gender')
+                            <div class="text-red" role="alert">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                          </div>
                       <div>
                         <div>
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">

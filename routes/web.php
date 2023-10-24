@@ -64,6 +64,8 @@ Route::prefix('dashboard')->group(function () {
          Route::get('/create', [TAInformationsController::class, 'create'])->name('backend.ta-information.create');
          Route::get('/edit/{id}', [TAInformationsController::class, 'edit'])->name('backend.ta-information.edit');
          Route::put('/edit/{id}', [TAInformationsController::class, 'update'])->name('backend.ta-information.edit');
+         Route::get('/view/{id}', [TAInformationsController::class, 'view'])->name('backend.ta-information.view');
+         Route::get('/office-hour/{id}', [TAInformationsController::class, 'officeHour'])->name('backend.ta-information.office-hour');
 
       });
 

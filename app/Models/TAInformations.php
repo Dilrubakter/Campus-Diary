@@ -17,6 +17,8 @@ class TAInformations extends Model
         'uuid',
         'name',
         'dob',
+        'gender',
+        'contact',
         'designations',
         'email',
         'phone_no',

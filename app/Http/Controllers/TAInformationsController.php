@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Day;
 use Illuminate\Http\Request;
 use App\Models\TAInformations;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +33,9 @@ class TAInformationsController extends Controller
             'phone' => ['nullable'],
             'designation' => ['required'],
             'dob' => ['nullable'],
+            'gender' => ['required'],
             'photo' => ['nullable', 'file'],
+            'contact' => ['nullable']
         ]);
 
         if ($validator->fails()) {
@@ -58,6 +61,8 @@ class TAInformationsController extends Controller
         $taInfo->phone_no = $request->input('phone');
         $taInfo->designations = $request->input('designation');
         $taInfo->dob = $request->input('dob');
+        $taInfo->contact = $request->input('contact');
+        $taInfo->gender = $request->input('gender');
         $taInfo->photo = $photo;
         $taInfo->save();
 
@@ -85,6 +90,8 @@ class TAInformationsController extends Controller
             'phone' => ['nullable'],
             'designation' => ['required'],
             'dob' => ['nullable'],
+            'contact' => ['nullable'],
+            'gender' => ['required'],
             'photo' => ['nullable', 'file'],
         ]);
 
@@ -108,6 +115,8 @@ class TAInformationsController extends Controller
         $taInfo->phone_no = $request->input('phone');
         $taInfo->designations = $request->input('designation');
         $taInfo->dob = $request->input('dob');
+        $taInfo->gender = $request->input('gender');
+        $taInfo->contact = $request->input('contact');
 
 
         if ($request->hasFile('photo')) {
@@ -123,6 +132,23 @@ class TAInformationsController extends Controller
 
         // Notify the user of a successful operation
         return redirect()->route('backend.ta-information');
+    }
+
+
+    public function view(Request $request, $id)
+    {
+        $data = TAInformations::where('uuid', $id)->first();
+        $day = Day::all();
+
+        return view('backend.ta-information.view-profile', compact('data', 'day'));
+    }
+
+
+    public function officeHour(Request $request, $id)
+    {
+        $data = TAInformations::where('uuid', $id)->first();
+
+        return view('backend.ta-information.office-hour', compact('data'));
     }
 
 
