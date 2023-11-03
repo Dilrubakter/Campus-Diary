@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Day;
+use App\Models\OfficeHour;
+use App\Models\TimeSchedule;
 use Illuminate\Http\Request;
 use App\Models\TAInformations;
 use Illuminate\Support\Facades\Log;
@@ -139,18 +141,72 @@ class TAInformationsController extends Controller
     {
         $data = TAInformations::where('uuid', $id)->first();
         $day = Day::all();
-
         return view('backend.ta-information.view-profile', compact('data', 'day'));
     }
+
+
+    // public function view()
+    // {
+    //     // $data = TAInformations::where('uuid', $id)->first();
+    //     $data = TAInformations::with(['officeHours', 'officeHours.day', 'officeHours.day.timeSchedules'])->get();
+    //     $day = Day::all();
+
+    //     return response()->json($data);
+    //     // return view('backend.ta-information.view-profile', compact('data', 'day'));
+    // }
 
 
     public function officeHour(Request $request, $id)
     {
         $data = TAInformations::where('uuid', $id)->first();
+        $day = Day::all();
+        $time = TimeSchedule::all();
 
-        return view('backend.ta-information.office-hour', compact('data'));
+        return view('backend.ta-information.office-hour', compact('data', 'day', 'time'));
     }
 
+    public function postOfficeHour(Request $request, $id)
+    {
+
+        $taInfo = TAInformations::where('uuid', $id)->first();
+        if(!$taInfo){
+            flash()->addError('TA Not Found');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'day' => ['required'],
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'course_code' => ['nullable'],
+            'room_no' => ['nullable'],
+            'office_hour' => ['nullable'],
+            'idle' => ['nullable']
+        ]);
+
+        if ($validator->fails()) {
+            // Notify the user of validation errors
+            return redirect()->route('backend.ta-information.office-hour', ['id' => $id])
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        // Create a new TAInformations instance and save it to the database
+        $data = new OfficeHour();
+        $data->persons_uuid = $id;
+        $data->day_uuid = $request->input('day');
+        $data->start_time = $request->input('start_time');
+        $data->end_time = $request->input('end_time');
+        $data->subject_code = $request->input('course_code');
+        $data->room_no = $request->input('room_no');
+        $data->office_hour = $request->input('office_hour');
+        $data->idle = $request->input('idle');
+        $data->save();
+
+        flash()->addSuccess('Office Hour Added Added Successfully');
+
+        // Notify the user of a successful operation
+        return redirect()->route('backend.ta-information.view', ['id' => $id]);
+    }
 
 
 

@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\TAInformationsController;
 
 /*
@@ -66,7 +67,19 @@ Route::prefix('dashboard')->group(function () {
          Route::put('/edit/{id}', [TAInformationsController::class, 'update'])->name('backend.ta-information.edit');
          Route::get('/view/{id}', [TAInformationsController::class, 'view'])->name('backend.ta-information.view');
          Route::get('/office-hour/{id}', [TAInformationsController::class, 'officeHour'])->name('backend.ta-information.office-hour');
+         Route::post('/office-hour/{id}', [TAInformationsController::class, 'postOfficeHour'])->name('backend.ta-information.office-hour');
 
+      });
+
+
+      /**\
+       * Alumni Network
+       */
+
+      Route::prefix('alumni')->group(function(){
+        Route::get('/', [AlumniController::class, 'index'])->name('backend.alumin');
+        Route::get('/create', [AlumniController::class, 'create'])->name('backend.alumin.create');
+        Route::post('/create', [AlumniController::class, 'store'])->name('backend.alumin');
       });
 
 

@@ -6,17 +6,21 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Day extends Model
+class Alumni extends Model
 {
     use HasFactory;
 
-    protected $table = 'date';
+    protected $table = 'alumni';
     protected $primaryKey = 'id';
-
     protected $fillable = [
         'uuid',
-        'day',
-        'short_name',
+        'first_name',
+        'last_name',
+        'designations',
+        'current_working_company',
+        'current_location',
+        'linkedin_profile_link',
+        'photo',
         'created_by',
         'created_at',
         'updated_by',
@@ -24,17 +28,6 @@ class Day extends Model
         'deleted_by',
         'deleted_at',
     ];
-
-    public function officeHour()
-    {
-        return $this->hasOne(OfficeHour::class, 'day_uuid', 'uuid');
-    }
-
-    public function timeSchedules()
-    {
-        return $this->hasMany(TimeSchedule::class, 'uuid', 'day_uuid');
-    }
-
 
     public static function boot()
     {

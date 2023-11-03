@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Models;
 
+use App\Models\OfficeHour;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +30,13 @@ class TAInformations extends Model
         'deleted_by',
         'deleted_at',
     ];
+
+
+    public function officeHours()
+    {
+        return $this->belongsTo(OfficeHour::class, 'uuid', 'persons_uuid');
+    }
+
 
     public static function boot()
     {

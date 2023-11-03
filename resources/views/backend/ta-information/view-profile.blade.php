@@ -20,8 +20,6 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
-
-
     <div>
         <div class="container mx-auto my-5 p-5">
             <div class="md:flex no-wrap md:-mx-2 ">

@@ -15,6 +15,7 @@ class TimeSchedule extends Model
 
     protected $fillable = [
         'uuid',
+        'day_uuid',
         'start_time',
         'end_time',
         'created_by',
@@ -24,6 +25,13 @@ class TimeSchedule extends Model
         'deleted_by',
         'deleted_at',
     ];
+
+    public function officeHours()
+    {
+        return $this->hasMany(OfficeHour::class, 'time_uuid', 'uuid');
+    }
+
+
 
     public static function boot()
     {
