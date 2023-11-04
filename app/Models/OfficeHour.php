@@ -33,11 +33,6 @@ class OfficeHour extends Model
         'deleted_at',
     ];
 
-    public function day()
-    {
-        return $this->belongsTo(Day::class, 'day_uuid', 'uuid');
-    }
-
     public static function boot()
     {
         parent::boot();

@@ -121,21 +121,83 @@
                         <div class="text-gray-700">
                             <div class="max-w-full overflow-x-auto">
                                 <table class="w-full table-auto">
-                                  <thead>
-                                    <tr class="bg-gray-2 text-left dark:bg-meta-4">
-                                      <th class="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        Day
-                                      </th>
-                                    </tr>
-                                  </thead>
                                   <tbody>
+                                    @php
+                                    function formatTime($time) {
+                                        $timeParts = explode(' - ', $time);
+                                        $formattedTime = [];
+                                        foreach ($timeParts as $part) {
+                                            $formattedTime[] = date('h:iA', strtotime($part));
+                                        }
+                                        return implode(' - ', $formattedTime);
+                                    }
+                                    @endphp
+                                    @php
+                                    $previousDay = '';
+                                    $previousTimeSlots = [];
+                                    @endphp
+                                    @if ($data->personOfficeHour)
+                                        @foreach ($data->personOfficeHour as $personOfficeHour)
+                                            @php
+                                            $day = $personOfficeHour->day[0]->day;
+                                            $timeSlots = [];
+                                            $courses = [];
+                                            $roomNumbers = [];
+                                            @endphp
+                                            @if ($personOfficeHour->day[0]->officeHour)
+                                                @foreach ($personOfficeHour->day[0]->officeHour as $officeHour)
+                                                    @php
+                                                    $startTime = $officeHour->start_time;
+                                                    $endTime = $officeHour->end_time;
+                                                    $subjectCode = $officeHour->subject_code;
+                                                    $roomNo = $officeHour->room_no;
 
-                                    <tr>
-                                      <td class="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                        <p class="text-black dark:text-white">$0.00</p>
-                                      </td>
-                                    </tr>
-                                  </tbody>
+                                                    if ($startTime && $endTime) {
+                                                        $timeSlots[] = "$startTime - $endTime";
+
+                                                        if ($subjectCode && $roomNo) {
+                                                            $courses[] = $subjectCode;
+                                                            $roomNumbers[] = $roomNo;
+                                                        } else {
+                                                            $courses[] = ''; // Add an empty value if subject code is not available
+                                                            $roomNumbers[] = ''; // Add an empty value if room number is not available
+                                                        }
+                                                    }
+                                                    @endphp
+                                                @endforeach
+                                            @endif
+                                            @if ($day && count($timeSlots) > 0)
+                                                @if ($day !== $previousDay || $timeSlots !== $previousTimeSlots)
+                                                    <tr>
+                                                        <td class="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                                            <p class="text-black dark:text-white">{{ $day }}</p>
+                                                        </td>
+                                                        @foreach ($timeSlots as $index => $time)
+                                                            <td class="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                                                <p class="text-black dark:text-white">{{ formatTime($time) }}</p>
+                                                                @if ($courses[$index])
+                                                                    <p class="text-sm">
+                                                                        {{ $courses[$index] }}
+                                                                        @if ($roomNumbers[$index])
+                                                                            <br>{{ $roomNumbers[$index] }}
+                                                                        @endif
+                                                                    </p>
+                                                                @elseif ($roomNumbers[$index])
+                                                                    <p class="text-sm">{{ $roomNumbers[$index] }}</p>
+                                                                @else
+                                                                    <p class="text-sm">Office Hour</p>
+                                                                @endif
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                @endif
+                                                @php
+                                                $previousDay = $day;
+                                                $previousTimeSlots = $timeSlots;
+                                                @endphp
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </table>
                               </div>
                         </div>

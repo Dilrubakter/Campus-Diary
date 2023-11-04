@@ -4,21 +4,22 @@ namespace App\Models;
 
 use App\Models\Day;
 use Illuminate\Support\Str;
+use App\Models\TimeSchedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TimeSchedule extends Model
+class PersonOfficeHourDay extends Model
 {
+
     use HasFactory;
 
-    protected $table = 'time_schedule';
+    protected $table = 'person_office_hour_day';
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'uuid',
+        'person_uuid',
         'day_uuid',
-        'start_time',
-        'end_time',
         'created_by',
         'created_at',
         'updated_by',
@@ -27,17 +28,9 @@ class TimeSchedule extends Model
         'deleted_at',
     ];
 
-    public function officeHours()
-    {
-        return $this->hasMany(OfficeHour::class, 'time_uuid', 'uuid');
-    }
-
     public function day(){
-        return $this->belongsTo(Day::class, 'day_uuid', 'day_uuid');
+        return $this->hasMany(Day::class, 'uuid', 'day_uuid');
     }
-
-
-
 
     public static function boot()
     {

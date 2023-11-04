@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\OfficeHour;
 use Illuminate\Support\Str;
+use App\Models\TimeSchedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,12 +29,7 @@ class Day extends Model
 
     public function officeHour()
     {
-        return $this->hasOne(OfficeHour::class, 'day_uuid', 'uuid');
-    }
-
-    public function timeSchedules()
-    {
-        return $this->hasMany(TimeSchedule::class, 'uuid', 'day_uuid');
+        return $this->hasMany(OfficeHour::class, 'day_uuid', 'uuid');
     }
 
 

@@ -7,6 +7,7 @@ use App\Models\OfficeHour;
 use App\Models\TimeSchedule;
 use Illuminate\Http\Request;
 use App\Models\TAInformations;
+use App\Models\PersonOfficeHourDay;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -139,22 +140,13 @@ class TAInformationsController extends Controller
 
     public function view(Request $request, $id)
     {
-        $data = TAInformations::where('uuid', $id)->first();
-        $day = Day::all();
-        return view('backend.ta-information.view-profile', compact('data', 'day'));
+        $data = TAInformations::with(['personOfficeHour', 'personOfficeHour.day', 'personOfficeHour.day.officeHour'])
+            ->where('uuid', $id)
+            ->first();
+        return view('backend.ta-information.view-profile', [
+            'data' => $data
+        ]);
     }
-
-
-    // public function view()
-    // {
-    //     // $data = TAInformations::where('uuid', $id)->first();
-    //     $data = TAInformations::with(['officeHours', 'officeHours.day', 'officeHours.day.timeSchedules'])->get();
-    //     $day = Day::all();
-
-    //     return response()->json($data);
-    //     // return view('backend.ta-information.view-profile', compact('data', 'day'));
-    // }
-
 
     public function officeHour(Request $request, $id)
     {
@@ -192,6 +184,9 @@ class TAInformationsController extends Controller
 
         // Create a new TAInformations instance and save it to the database
         $data = new OfficeHour();
+        $hourData = new PersonOfficeHourDay();
+        $hourData->person_uuid = $id;
+        $hourData->day_uuid = $request->input('day');
         $data->persons_uuid = $id;
         $data->day_uuid = $request->input('day');
         $data->start_time = $request->input('start_time');
@@ -201,11 +196,24 @@ class TAInformationsController extends Controller
         $data->office_hour = $request->input('office_hour');
         $data->idle = $request->input('idle');
         $data->save();
+        $hourData->save();
 
         flash()->addSuccess('Office Hour Added Added Successfully');
 
         // Notify the user of a successful operation
         return redirect()->route('backend.ta-information.view', ['id' => $id]);
+    }
+
+
+
+    public function checkResponse()
+    {
+        // $data = TAInformations::where('uuid', $id)->first();
+        $data = TAInformations::with(['personOfficeHour', 'personOfficeHour.day', 'personOfficeHour.day.officeHour'])->get();
+        $day = Day::all();
+
+        return response()->json($data);
+        // return view('backend.ta-information.view-profile', compact('data', 'day'));
     }
 
 

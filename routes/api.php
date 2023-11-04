@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/ta-info', [TAInformationsController::class, 'view']);
+Route::get('/ta-info', [TAInformationsController::class, 'checkResponse']);

@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Models\OfficeHour;
 use Illuminate\Support\Str;
+use App\Models\PersonOfficeHourDay;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -32,9 +33,8 @@ class TAInformations extends Model
     ];
 
 
-    public function officeHours()
-    {
-        return $this->belongsTo(OfficeHour::class, 'uuid', 'persons_uuid');
+    public function personOfficeHour(){
+        return $this->hasMany(PersonOfficeHourDay::class, 'person_uuid', 'uuid');
     }
 
 

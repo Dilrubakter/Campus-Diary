@@ -136,19 +136,6 @@
                                 Office Hour
                             </label>
                         </div>
-
-                        <div x-data="{ checkboxOne: false, checkboxTwo: false }">
-                            <label for="checkboxLabelSix" class="flex cursor-pointer select-none items-center">
-                                <div class="relative">
-                                    <input type="checkbox" id="checkboxLabelSix" name="idle" class="sr-only" x-model="checkboxTwo" @click="checkboxOne = !checkboxTwo">
-                                    <div :class="{ 'border-4': checkboxTwo }" class="box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary">
-                                        <span class="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent" x-show="checkboxTwo"></span>
-                                    </div>
-                                </div>
-                                Not Available
-                            </label>
-                        </div>
-
                       </div>
                     </div>
                     <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
