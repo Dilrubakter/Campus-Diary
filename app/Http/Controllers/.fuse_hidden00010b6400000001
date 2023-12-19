@@ -8,6 +8,7 @@ use App\Models\TimeSchedule;
 use Illuminate\Http\Request;
 use App\Models\TAInformations;
 use App\Models\PersonOfficeHourDay;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -140,24 +141,17 @@ class TAInformationsController extends Controller
 
     public function view(Request $request, $id)
     {
-        $data = TAInformations::with([
-            'personOfficeHour',
-            'personOfficeHour.day',
-            'personOfficeHour.day.officeHour'
-        ])
-        ->where('ta_informations_uuid', $id)
-        ->first();
-    
-        // dd($data->toJson(JSON_PRETTY_PRINT));
-
+        $data = TAInformations::with(['personOfficeHour', 'personOfficeHour.day', 'personOfficeHour.day.officeHour'])
+            ->where('uuid', $id)
+            ->first();
         return view('backend.ta-information.view-profile', [
-            'data' => $data->toJson(JSON_PRETTY_PRINT)
+            'data' => $data
         ]);
     }
 
     public function officeHour(Request $request, $id)
     {
-        $data = TAInformations::where('ta_informations_uuid', $id)->first();
+        $data = TAInformations::where('uuid', $id)->first();
         $day = Day::all();
         $time = TimeSchedule::all();
 
@@ -176,12 +170,11 @@ class TAInformationsController extends Controller
             'day' => ['required'],
             'start_time' => ['required'],
             'end_time' => ['required'],
-            'course_code' => ['nullable', 'required_without_all:office_hour,room_no', 'required_with:room_no'],
-            'room_no' => ['nullable', 'required_without_all:office_hour,course_code', 'required_with:course_code'],
-            'office_hour' => ['nullable', 'required_without_all:course_code,room_no'],
+            'course_code' => ['nullable'],
+            'room_no' => ['nullable'],
+            'office_hour' => ['nullable'],
             'idle' => ['nullable']
         ]);
-        
 
         if ($validator->fails()) {
             // Notify the user of validation errors
@@ -203,15 +196,8 @@ class TAInformationsController extends Controller
         $data->office_hours_room_no = $request->input('room_no');
         $data->office_hours_office_hour = $request->input('office_hour');
         $data->office_hours_idle = $request->input('idle');
-
-        $existingRecord = PersonOfficeHourDay::where('person_office_hour_day_day_uuid', $request->input('day'))
-        ->where('person_office_hour_day_person_uuid', $id)
-        ->first();
-
-        if (!$existingRecord) {
-            $hourData->save();
-        }
         $data->save();
+        $hourData->save();
 
         flash()->addSuccess('Office Hour Added Added Successfully');
 
@@ -219,48 +205,73 @@ class TAInformationsController extends Controller
         return redirect()->route('backend.ta-information.view', ['id' => $id]);
     }
 
-
-
     // public function checkResponse()
     // {
-    //     $id = '9add31e6-6831-437c-82a7-6842f6ad775c';
-    //     // $data = TAInformations::where('uuid', $id)->first();
-    //     $data = TAInformations::with([
-    //         'personOfficeHour',
-    //         'personOfficeHour.day',
-    //         'personOfficeHour.day.officeHour'
-    //     ])
-    //     ->where('ta_informations_uuid', $id)
-    //     ->first();
-
+    //     $data = TAInformations::with(['personOfficeHour.day'])->get();
     
-    //     return response()->json($data);
+    //     // Process each TA's data
+    //     $mergedData = $data->map(function ($ta) {
+    //         $mergedPersonData = $this->mergeDaysForPerson($ta->toArray());
+    //         return $mergedPersonData;
+    //     });
+    
+    //     return response()->json($mergedData);
     // }
     public function checkResponse()
     {
-        $id = '9add31e6-6831-437c-82a7-6842f6ad775c';
+        $data = TAInformations::with(['personOfficeHour.day'])->get();
+        $day = Day::all();
     
-        $data = TAInformations::with([
-            'personOfficeHour',
-            'personOfficeHour.day',
-            'personOfficeHour.day.officeHour'
-        ])
-            ->where('ta_informations_uuid', $id)
-            ->first();
-
-        return response()->json($data, 200);
+        // Transform the data to merge person data for the same day
+        $transformedData = $data->map(function ($item) {
+            // Check if person_office_hour is not empty
+            if (!empty($item->person_office_hour)) {
+                $groupedOfficeHours = $item->person_office_hour->groupBy('person_office_hour_day_day_id');
     
-        // $personOfficeHour = $data['personOfficeHour'];
-        // // return view('backend.ta-information.view-profile', [
-        // //     'data' => $data
-        // // ]);
-        // return view('backend.ta-information.view-profile', compact('data', 'personOfficeHour'));
-
-        return response()->json(['message' => 'Hello']);
-
-
+                $mergedData = $groupedOfficeHours->map(function ($officeHours) {
+                    $mergedDay = $officeHours->first()->day->toArray();
+                    $mergedDay['office_hours'] = $officeHours->pluck('person_office_hour_day_id')->toArray();
+                    return $mergedDay;
+                });
+    
+                $item->merged_office_hours = $mergedData->values()->toArray();
+            } else {
+                $item->merged_office_hours = [];
+            }
+    
+            return $item;
+        });
+    
+        // Merge data for the same day
+        $mergedDays = collect([]);
+        foreach ($transformedData as $item) {
+            foreach ($item->merged_office_hours as $day) {
+                $existingDay = $mergedDays->where('day_id', $day['day_id'])->first();
+                if ($existingDay) {
+                    // Merge office hours for the same day
+                    $existingDay['office_hours'] = array_merge($existingDay['office_hours'], $day['office_hours']);
+                } else {
+                    $mergedDays->push($day);
+                }
+            }
+        }
+    
+        // Create the response array
+        $responseArray = [
+            'transformedData' => $transformedData,
+            'day' => $day,
+            'mergedDays' => $mergedDays->values()->toArray(),
+        ];
+    
+        // Return a JSON response
+        return response()->json($responseArray);
     }
     
+
+    
+
+
+
 
 
 }

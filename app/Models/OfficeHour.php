@@ -13,18 +13,18 @@ class OfficeHour extends Model
     use HasFactory;
 
     protected $table = 'office_hours';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'office_hours_id';
 
     protected $fillable = [
-        'uuid',
-        'persons_uuid',
-        'day_uuid',
-        'start_time',
-        'end_time',
-        'subject_code',
-        'room_no',
-        'office_hour',
-        'idle',
+        'office_hours_uuid',
+        'office_hours_persons_uuid',
+        'office_hours_day_uuid',
+        'office_hours_start_time',
+        'office_hours_end_time',
+        'office_hours_subject_code',
+        'office_hours_room_no',
+        'office_hours_office_hour',
+        'office_hours_idle',
         'created_by',
         'created_at',
         'updated_by',
@@ -38,7 +38,7 @@ class OfficeHour extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->uuid = (string) Str::orderedUuid();
+            $model->office_hours_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 

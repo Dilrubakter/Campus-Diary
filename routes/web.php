@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\TAInformationsController;
@@ -80,6 +81,21 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/', [AlumniController::class, 'index'])->name('backend.alumin');
         Route::get('/create', [AlumniController::class, 'create'])->name('backend.alumin.create');
         Route::post('/create', [AlumniController::class, 'store'])->name('backend.alumin');
+      });
+
+      /**
+       * Lab Information
+       */
+
+      Route::prefix('lab-info')->group(function(){
+        Route::get('/', [LabInformationController::class, 'index'])->name('backend.lab-info');
+        Route::get('/create', [LabInformationController::class, 'create'])->name('backend.lab-info.create');
+        Route::post('/', [LabInformationController::class, 'store'])->name('backend.lab-info');
+        Route::get('/edit/{id}', [LabInformationController::class, 'edit'])->name('backend.lab-info.edit');
+        Route::put('/edit/{id}', [LabInformationController::class, 'update'])->name('backend.lab-info.edit');
+        Route::get('/view/{id}', [LabInformationController::class, 'view'])->name('backend.lab-info.view');
+        Route::get('/office-hour/{id}', [LabInformationController::class, 'officeHour'])->name('backend.lab-info.office-hour');
+        Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-info.office-hour');
       });
 
 

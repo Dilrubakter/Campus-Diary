@@ -13,12 +13,12 @@ class Day extends Model
     use HasFactory;
 
     protected $table = 'date';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'day_id';
 
     protected $fillable = [
-        'uuid',
-        'day',
-        'short_name',
+        'day_uuid',
+        'day_day',
+        'day_short_name',
         'created_by',
         'created_at',
         'updated_by',
@@ -29,7 +29,7 @@ class Day extends Model
 
     public function officeHour()
     {
-        return $this->hasMany(OfficeHour::class, 'day_uuid', 'uuid');
+        return $this->hasMany(OfficeHour::class, 'office_hours_day_uuid', 'day_uuid');
     }
 
 
@@ -38,7 +38,7 @@ class Day extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->uuid = (string) Str::orderedUuid();
+            $model->day_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 
