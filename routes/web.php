@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\AlumniController;
-use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TimeScheduleController;
+use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
+use App\Http\Controllers\FacultyInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,24 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-information.office-hour');
       });
 
+      /**
+       * Faculty-Information
+       */
+
+
+      Route::prefix('faculty-information')->group(function(){
+        Route::get('/', [FacultyInformationController::class, 'index'])->name('backend.faculty-information');
+        Route::get('/create', [LabInformationController::class, 'create'])->name('backend.lab-information.create');
+        Route::post('/', [LabInformationController::class, 'store'])->name('backend.lab-information');
+        Route::get('/edit/{id}', [LabInformationController::class, 'edit'])->name('backend.lab-information.edit');
+        Route::put('/edit/{id}', [LabInformationController::class, 'update'])->name('backend.lab-information.edit');
+        Route::get('/view/{id}', [LabInformationController::class, 'view'])->name('backend.lab-information.view');
+        Route::get('/office-hour/{id}', [LabInformationController::class, 'officeHour'])->name('backend.lab-information.office-hour');
+        Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-information.office-hour');
+      });
+
 
 });
 
 require __DIR__.'/auth.php';
+ 
