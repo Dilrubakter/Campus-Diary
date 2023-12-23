@@ -68,17 +68,20 @@ class LabInformationController extends Controller
 
     public function view(Request $request, $id)
     {
-        $data = LabInformation::with(['personOfficeHour', 'personOfficeHour.day', 'personOfficeHour.day.officeHour'])
-            ->where('uuid', $id)
-            ->first();
+        $data = LabInformation::with([
+            'personOfficeHour',
+            'personOfficeHour.day',
+            'personOfficeHour.day.labOfficeHour'
+        ])
+        ->where('lab_information_uuid', $id)
+        ->first();
+    
+        // dd($data->toJson(JSON_PRETTY_PRINT));
+
         return view('backend.lab-information.view-lab', [
-            'data' => $data
+            'data' => $data->toJson(JSON_PRETTY_PRINT)
         ]);
     }
-    // public function view(Request $request, $id) {
-    //     $data = LabInformation::where('uuid', $id)->first();
-    //     return view('backend.lab-information.view-lab', compact('data'));
-    // }
 
     public function update(Request $request, $id)
     {
@@ -123,7 +126,7 @@ class LabInformationController extends Controller
 
     public function officeHour(Request $request, $id)
     {
-        $data = LabInformation::where('uuid', $id)->first();
+        $data = LabInformation::where('lab_information_uuid', $id)->first();
         $day = Day::all();
         $time = TimeSchedule::all();
 
@@ -134,7 +137,7 @@ class LabInformationController extends Controller
     public function postOfficeHour(Request $request, $id)
     {
 
-        $taInfo = LabInformation::where('uuid', $id)->first();
+        $taInfo = LabInformation::where('lab_information_uuid', $id)->first();
         if(!$taInfo){
             flash()->addError('Lab Not Found');
         }
@@ -143,15 +146,15 @@ class LabInformationController extends Controller
             'day' => ['required'],
             'start_time' => ['required'],
             'end_time' => ['required'],
-            'course_code' => ['nullable'],
-            'room_no' => ['nullable'],
-            'office_hour' => ['nullable'],
+            'course_code' => ['nullable', 'required_without_all:office_hour,room_no', 'required_with:room_no'],
+            'room_no' => ['nullable', 'required_without_all:office_hour,course_code', 'required_with:course_code'],
+            'office_hour' => ['nullable', 'required_without_all:course_code,room_no'],
             'idle' => ['nullable']
         ]);
 
         if ($validator->fails()) {
             // Notify the user of validation errors
-            return redirect()->route('backend.ta-information.office-hour', ['id' => $id])
+            return redirect()->route('backend.lab-information.office-hour', ['id' => $id])
                 ->withInput()
                 ->withErrors($validator);
         }
@@ -159,22 +162,29 @@ class LabInformationController extends Controller
         // Create a new TAInformations instance and save it to the database
         $data = new LabOffieHour();
         $hourData = new LabOffieHourDay();
-        $hourData->lab_uuid = $id;
-        $hourData->day_uuid = $request->input('day');
-        $data->lab_uuid = $id;
-        $data->day_uuid = $request->input('day');
-        $data->start_time = $request->input('start_time');
-        $data->end_time = $request->input('end_time');
-        $data->subject_code = $request->input('course_code');
-        $data->room_no = $request->input('room_no');
-        $data->office_hour = $request->input('office_hour');
-        $data->idle = $request->input('idle');
+        $hourData->lab_office_hour_day_lab_uuid = $id;
+        $hourData->lab_office_hour_day_day_uuid = $request->input('day');
+        $data->lab_offie_hour_lab_uuid = $id;
+        $data->lab_offie_hour_day_uuid = $request->input('day');
+        $data->lab_offie_hour_start_time = $request->input('start_time');
+        $data->lab_offie_hour_end_time = $request->input('end_time');
+        $data->lab_offie_hour_subject_code = $request->input('course_code');
+        $data->lab_offie_hour_room_no = $request->input('room_no');
+        $data->lab_offie_hour_office_hour = $request->input('office_hour');
+        $data->lab_offie_hour_idle = $request->input('idle');
+
+        $existingRecord = LabOffieHourDay::where('lab_office_hour_day_day_uuid', $request->input('day'))
+        ->where('lab_office_hour_day_lab_uuid', $id)
+        ->first();
+
+        if (!$existingRecord) {
+            $hourData->save();
+        }
         $data->save();
-        $hourData->save();
 
         flash()->addSuccess('Office Hour Added Added Successfully');
 
         // Notify the user of a successful operation
-        return redirect()->route('backend.lab-info.view', ['id' => $id]);
+        return redirect()->route('backend.lab-information.view', ['id' => $id]);
     }
 }

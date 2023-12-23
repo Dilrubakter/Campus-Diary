@@ -11,12 +11,12 @@ class LabOffieHourDay extends Model
     use HasFactory;
 
     protected $table = 'lab_office_hour_day';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'lab_office_hour_day_id';
 
     protected $fillable = [
-        'uuid',
-        'lab_uuid',
-        'day_uuid',
+        'lab_office_hour_day_uuid',
+        'lab_office_hour_day_lab_uuid',
+        'lab_office_hour_day_day_uuid',
         'created_by',
         'created_at',
         'updated_by',
@@ -26,7 +26,7 @@ class LabOffieHourDay extends Model
     ];
 
     public function day(){
-        return $this->hasMany(Day::class, 'uuid', 'day_uuid');
+        return $this->hasMany(Day::class, 'day_uuid', 'lab_office_hour_day_day_uuid');
     }
 
     public static function boot()
@@ -34,7 +34,7 @@ class LabOffieHourDay extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->uuid = (string) Str::orderedUuid();
+            $model->lab_office_hour_day_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 

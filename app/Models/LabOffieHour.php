@@ -11,18 +11,18 @@ class LabOffieHour extends Model
     use HasFactory;
 
     protected $table = 'lab_offie_hour';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'lab_offie_hour_id';
 
     protected $fillable = [
-        'uuid',
-        'lab_uuid',
-        'day_uuid',
-        'start_time',
-        'end_time',
-        'subject_code',
-        'room_no',
-        'office_hour',
-        'idle',
+        'lab_offie_hour_uuid',
+        'lab_offie_hour_lab_uuid',
+        'lab_offie_hour_day_uuid',
+        'lab_offie_hour_start_time',
+        'lab_offie_hour_end_time',
+        'lab_offie_hour_subject_code',
+        'lab_offie_hour_room_no',
+        'lab_offie_hour_office_hour',
+        'lab_offie_hour_idle',
         'created_by',
         'created_at',
         'updated_by',
@@ -36,7 +36,7 @@ class LabOffieHour extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->uuid = (string) Str::orderedUuid();
+            $model->lab_offie_hour_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 

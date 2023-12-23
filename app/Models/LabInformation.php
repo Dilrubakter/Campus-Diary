@@ -15,10 +15,10 @@ class LabInformation extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'uuid',
-        'name',
-        'room_no',
-        'photo',
+        'lab_information_uuid',
+        'lab_information_name',
+        'lab_information_room_no',
+        'lab_information_photo',
         'created_by',
         'created_at',
         'updated_by',
@@ -28,7 +28,7 @@ class LabInformation extends Model
     ];
 
     public function personOfficeHour(){
-        return $this->hasMany(LabOffieHourDay::class, 'lab_uuid', 'uuid');
+        return $this->hasMany(LabOffieHourDay::class, 'lab_office_hour_day_lab_uuid', 'lab_information_uuid');
     }
 
     public static function boot()

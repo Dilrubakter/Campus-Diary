@@ -10,7 +10,7 @@
         <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="text-title-md2 font-bold py-2 text-black dark:text-white">
-                    Office Hour
+                    Day
                 </h2>
 
                 <nav>
@@ -54,16 +54,17 @@
                                     d="M14.1896 0.459804C14.3922 0.307837 14.6708 0.333165 14.8227 0.510459L16.5704 2.58734C17.0009 3.09389 17.0009 3.85373 16.545 4.41094L14.7974 6.48782C14.7214 6.58913 14.5948 6.63978 14.4682 6.63978C14.3668 6.63978 14.2655 6.61445 14.1896 6.53847C14.0123 6.36118 13.9869 6.08257 14.1389 5.90528L15.7852 3.95504H1.75361C1.50033 3.95504 1.29771 3.75241 1.29771 3.49914C1.29771 3.24586 1.50033 3.04324 1.75361 3.04324H15.7852L14.1389 1.093C13.9869 0.890376 14.0123 0.61177 14.1896 0.459804ZM15.0097 2.68302H1.75362C1.3014 2.68302 0.9375 3.04692 0.9375 3.49914C0.9375 3.95136 1.3014 4.31525 1.75362 4.31525H15.0097L13.8654 5.67085C13.8651 5.67123 13.8648 5.67161 13.8644 5.67199C13.5725 6.01385 13.646 6.50432 13.9348 6.79318C14.1022 6.96055 14.3113 7 14.4682 7C14.6795 7 14.9203 6.91713 15.0784 6.71335L16.8207 4.64286L16.8238 4.63904C17.382 3.95682 17.3958 3.00293 16.8455 2.35478C16.8453 2.35453 16.845 2.35429 16.8448 2.35404L15.0984 0.278534L15.0962 0.276033C14.8097 -0.0583053 14.3139 -0.0837548 13.9734 0.17163L13.964 0.17867L13.9551 0.186306C13.6208 0.472882 13.5953 0.968616 13.8507 1.30913L13.857 1.31743L15.0097 2.68302Z"
                                     fill=""></path>
                             </svg>
-                            Office Hour
+                            Edit
                         </li>
                     </ol>
                 </nav>
             </div>
             <!-- ====== Form Elements Section Start -->
             <div class="w-fill text-right py-4">
-                {{-- <a href="{{ route('backend.ta-information.view', ['id' => $data->uuid]) }}" class="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-8">
-                Back
-            </a> --}}
+                <a href="{{ route('backend.ta-information') }}"
+                    class="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-8">
+                    Back
+                </a>
             </div>
         </div>
         <!-- Breadcrumb End -->
@@ -71,108 +72,145 @@
 
         <div class="grid grid-cols-1 gap-9 sm:grid-cols-1">
             <div class="flex flex-col gap-9">
-                <form action="{{ route('backend.lab-information.office-hour', ['id' => $data->lab_information_uuid]) }}"
-                    method ="POST" enctype="multipart/form-data">
+                <form action="{{ route('backend.ta-information.edit', ['id' => $data->ta_informations_uuid]) }}"
+                    method ="post" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div
                         class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div class="flex flex-col gap-5.5 p-6.5">
+                            <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                <div class="w-full xl:w-1/2">
+                                    <label class="mb-2.5 block text-black dark:text-white">
+                                        First name <span class="text-meta-1">*</span>
+                                    </label>
+                                    <input type="text" name="first_name" placeholder="Enter your first name"
+                                        value="{{ $data->first_name }}"
+                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                    @error('first_name')
+                                        <div class="text-red" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="w-full xl:w-1/2">
+                                    <label class="mb-2.5 block text-black dark:text-white">
+                                        Last name <span class="text-meta-1">*</span>
+                                    </label>
+                                    <input type="text" name="last_name" placeholder="Enter your last name"
+                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        value="{{ $data->last_name }}">
+                                    @error('last_name')
+                                        <div class="text-red" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-4.5">
+                                <label class="mb-2.5 block text-black dark:text-white">
+                                    Email <span class="text-meta-1">*</span>
+                                </label>
+                                <input type="email" name="email" placeholder="Enter your email address"
+                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    value="{{ $data->email }}">
+                                @error('email')
+                                    <div class="text-red" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-4.5">
+                                <label class="mb-2.5 block text-black dark:text-white">
+                                    Phone
+                                </label>
+                                <input type="text" name="phone" placeholder="Enter your phone number"
+                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    value="{{ $data->phone_no }}">
+                                @error('phone')
+                                    <div class="text-red" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                             <div>
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Day <span class="text-meta-1">*</span>
+                                    Designations <span class="text-meta-1">*</span>
                                 </label>
                                 <div class="relative z-20 bg-white dark:bg-form-input">
                                     <select
                                         class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
-                                        name="day">
-                                        @foreach ($day as $day)
-                                            <option value="{{ $day->day_uuid }}">{{ $day->day_day }}</option>
-                                        @endforeach
+                                        name="designation">
+                                        <option value="UTA">UTA</option>
+                                        <option value="GTA">GTA</option>
+                                    </select>
+                                    <span class="absolute top-1/2 right-4 z-10 -translate-y-1/2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g opacity="0.8">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                                                    fill="#637381"></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
+                                @error('designation')
+                                    <div class="text-red" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Gender <span class="text-meta-1">*</span>
+                                </label>
+                                <div class="relative z-20 bg-white dark:bg-form-input">
+                                    <select
+                                        class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+                                        name="gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
                                     </select>
                                 </div>
-                                @error('day')
+                                @error('gender')
                                     <div class="text-red" role="alert">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
                             <div>
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Start Date
-                                </label>
-                                <div class="relative">
-                                    <input type="time" name="start_time" value="{{ old('start_time') }}"
-                                        class="custom-input-date custom-input-date-1 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                </div>
-                                @error('start_time')
-                                    <div class="text-red" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    End Date
-                                </label>
-                                <div class="relative">
-                                    <input type="time" name="end_time" value="{{ old('end_time') }}"
-                                        class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                </div>
-                                @error('start_time')
-                                    <div class="text-red" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="mb-4.5">
-                                <label class="mb-2.5 block text-black dark:text-white">
-                                    Course Code
-                                </label>
-                                <input type="text" name="course_code" placeholder="Enter your course code"
-                                    value="{{ old('course_code') }}"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                @error('course_code')
-                                    <div class="text-red" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="mb-4.5">
-                                <label class="mb-2.5 block text-black dark:text-white">
-                                    Room no
-                                </label>
-                                <input type="text" name="room_no" placeholder="Enter your room no"
-                                    value="{{ old('room_no') }}"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                @error('room_no')
-                                    <div class="text-red" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div x-data="{ checkboxOne: false, checkboxTwo: false }">
-                                <label for="checkboxLabelFive" class="flex cursor-pointer select-none items-center">
+                                <div>
+                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Date of Birth
+                                    </label>
                                     <div class="relative">
-                                        <input type="checkbox" id="checkboxLabelFive" name="office_hour" class="sr-only"
-                                            x-model="checkboxOne" @click="checkboxTwo = !checkboxOne">
-                                        <div :class="{ 'border-4': checkboxOne }"
-                                            class="box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary">
-                                            <span class="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent"
-                                                x-show="checkboxOne"></span>
-                                        </div>
+                                        <input type="date" name="dob"
+                                            class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                            value="{{ $data->dob }}">
                                     </div>
-                                    Office Hour
+                                </div>
+                                @error('dob')
+                                    <div class="text-red" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Photo
                                 </label>
+                                <input type="file" name="photo"
+                                    class="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm file:font-medium focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white">
                             </div>
                         </div>
                     </div>
                     <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
-                        Add Ofice Hour
+                        Update TA
                     </button>
+                </form>
             </div>
-            </form>
+            <!-- ====== Form Elements Section End -->
         </div>
-        <!-- ====== Form Elements Section End -->
-    </div>
 </x-app-layout>

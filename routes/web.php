@@ -73,7 +73,7 @@ Route::prefix('dashboard')->group(function () {
       });
 
 
-      /**\
+      /**
        * Alumni Network
        */
 
@@ -87,15 +87,15 @@ Route::prefix('dashboard')->group(function () {
        * Lab Information
        */
 
-      Route::prefix('lab-info')->group(function(){
-        Route::get('/', [LabInformationController::class, 'index'])->name('backend.lab-info');
-        Route::get('/create', [LabInformationController::class, 'create'])->name('backend.lab-info.create');
-        Route::post('/', [LabInformationController::class, 'store'])->name('backend.lab-info');
-        Route::get('/edit/{id}', [LabInformationController::class, 'edit'])->name('backend.lab-info.edit');
-        Route::put('/edit/{id}', [LabInformationController::class, 'update'])->name('backend.lab-info.edit');
-        Route::get('/view/{id}', [LabInformationController::class, 'view'])->name('backend.lab-info.view');
-        Route::get('/office-hour/{id}', [LabInformationController::class, 'officeHour'])->name('backend.lab-info.office-hour');
-        Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-info.office-hour');
+      Route::prefix('lab-information')->group(function(){
+        Route::get('/', [LabInformationController::class, 'index'])->name('backend.lab-information');
+        Route::get('/create', [LabInformationController::class, 'create'])->name('backend.lab-information.create');
+        Route::post('/', [LabInformationController::class, 'store'])->name('backend.lab-information');
+        Route::get('/edit/{id}', [LabInformationController::class, 'edit'])->name('backend.lab-information.edit');
+        Route::put('/edit/{id}', [LabInformationController::class, 'update'])->name('backend.lab-information.edit');
+        Route::get('/view/{id}', [LabInformationController::class, 'view'])->name('backend.lab-information.view');
+        Route::get('/office-hour/{id}', [LabInformationController::class, 'officeHour'])->name('backend.lab-information.office-hour');
+        Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-information.office-hour');
       });
 
 
