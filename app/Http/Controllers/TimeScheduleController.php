@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Day;
 use App\Models\TimeSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,6 +31,7 @@ class TimeScheduleController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'day' => ['required'],
             'start_time' => ['required'],
             'end_time' => ['required'],
         ]);
@@ -43,6 +45,7 @@ class TimeScheduleController extends Controller
 
         // Create a new TimeSchedule instance and save it to the database
         $timeSchedule = new TimeSchedule();
+        $timeSchedule->day_uuid = $request->input('day');
         $timeSchedule->start_time = $request->input('start_time');
         $timeSchedule->end_time = $request->input('end_time');
         $timeSchedule->save();
@@ -55,7 +58,8 @@ class TimeScheduleController extends Controller
 
     public function create()
     {
-        return view('backend.timeslot.create');
+        $day = Day::all();
+        return view('backend.timeslot.create', compact('day'));
     }
 
     public function delete($id)

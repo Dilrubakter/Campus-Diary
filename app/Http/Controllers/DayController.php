@@ -29,7 +29,8 @@ class DayController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'day' => ['required']
+            'day' => ['required'],
+            'short_name' => ['required']
         ]);
 
         if ($validator->fails()) {
@@ -42,6 +43,7 @@ class DayController extends Controller
         // Create a new TimeSchedule instance and save it to the database
         $day = new Day();
         $day->day = $request->input('day');
+        $day->short_name = $request->input('short_name');
         $day->save();
 
         flash()->addSuccess('Day Added Successully');

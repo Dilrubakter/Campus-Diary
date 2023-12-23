@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
-use App\Models\OfficeHour;
 use Illuminate\Support\Str;
-use App\Models\LabOffieHour;
-use App\Models\TimeSchedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Day extends Model
+class LabOffieHour extends Model
 {
     use HasFactory;
 
-    protected $table = 'date';
-    protected $primaryKey = 'day_id';
+    protected $table = 'lab_offie_hour';
+    protected $primaryKey = 'lab_offie_hour_id';
 
     protected $fillable = [
-        'day_uuid',
-        'day_day',
-        'day_short_name',
+        'lab_offie_hour_uuid',
+        'lab_offie_hour_lab_uuid',
+        'lab_offie_hour_day_uuid',
+        'lab_offie_hour_start_time',
+        'lab_offie_hour_end_time',
+        'lab_offie_hour_subject_code',
+        'lab_offie_hour_room_no',
+        'lab_offie_hour_office_hour',
+        'lab_offie_hour_idle',
         'created_by',
         'created_at',
         'updated_by',
@@ -28,23 +31,12 @@ class Day extends Model
         'deleted_at',
     ];
 
-    public function officeHour()
-    {
-        return $this->hasMany(OfficeHour::class, 'office_hours_day_uuid', 'day_uuid');
-    }
-
-    public function labOfficeHour()
-    {
-        return $this->hasMany(LabOffieHour::class, 'lab_offie_hour_day_uuid', 'day_uuid');
-    }
-
-
     public static function boot()
     {
         parent::boot();
 
         self::creating(function ($model) {
-            $model->day_uuid = (string) Str::orderedUuid();
+            $model->lab_offie_hour_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 

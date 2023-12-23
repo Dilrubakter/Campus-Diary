@@ -59,6 +59,23 @@
                 @csrf
                 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div class="flex flex-col gap-5.5 p-6.5">
+                        <div>
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                              Day <span class="text-meta-1">*</span>
+                            </label>
+                            <div class="relative z-20 bg-white dark:bg-form-input">
+                              <select class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input" name="day">
+                                @foreach ($day as $day)
+                                    <option value="{{ $day->uuid }}">{{ $day->day }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                            @error('day')
+                            <div class="text-red" role="alert">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
                       <div>
                         <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                           Start Date
