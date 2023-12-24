@@ -71,7 +71,7 @@
 
         <div class="grid grid-cols-1 gap-9 sm:grid-cols-1">
             <div class="flex flex-col gap-9">
-                <form action="{{ route('backend.lab-information.office-hour', ['id' => $data->lab_information_uuid]) }}"
+                <form action="{{ route('backend.ta-information.office-hour', ['id' => $data->ta_informations_uuid]) }}"
                     method ="POST" enctype="multipart/form-data">
                     @csrf
                     <div
