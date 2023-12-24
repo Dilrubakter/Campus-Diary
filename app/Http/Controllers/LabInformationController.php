@@ -84,7 +84,7 @@ class LabInformationController extends Controller
     }
 
     public function update(Request $request, $id)
-{
+    {
     $validator = Validator::make($request->all(), [
         'lab_name' => ['required'],
         'room_no' => ['required'],
@@ -125,7 +125,7 @@ class LabInformationController extends Controller
 
     // Notify the user of a successful operation
     return redirect()->route('backend.lab-information');
-}
+    }
 
 
     public function officeHour(Request $request, $id)
