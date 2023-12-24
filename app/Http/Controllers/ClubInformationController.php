@@ -23,7 +23,7 @@ class ClubInformationController extends Controller
             'club_name' => ['required'],
             'club_short_name' => ['required'],
             'overview' => ['nullable'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -77,7 +77,7 @@ class ClubInformationController extends Controller
         $validator = Validator::make($request->all(), [
             'member_name' => ['required'],
             'position' => ['required'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +120,7 @@ class ClubInformationController extends Controller
             'club_name' => ['required'],
             'club_short_name' => ['required'],
             'overview' => ['nullable'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
