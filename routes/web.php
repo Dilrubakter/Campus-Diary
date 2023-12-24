@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
+use App\Http\Controllers\ClubInformationController;
 use App\Http\Controllers\FacultyInformationController;
 
 /*
@@ -118,6 +119,23 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/view/{id}', [FacultyInformationController::class, 'view'])->name('backend.faculty-information.view');
         Route::get('/office-hour/{id}', [FacultyInformationController::class, 'officeHour'])->name('backend.faculty-information.office-hour');
         Route::post('/office-hour/{id}', [FacultyInformationController::class, 'postOfficeHour'])->name('backend.faculty-information.office-hour');
+      });
+
+      /**
+       * Club Information
+       */
+      
+      Route::prefix('club-information')->group(function() {
+        Route::get('/', [ClubInformationController::class, 'index'])->name('backend.club-information');
+        Route::get('/create', [ClubInformationController::class, 'create'])->name('backend.club-information.create');
+        Route::post('/store', [ClubInformationController::class, 'store'])->name('backend.club-information.store');
+        Route::get('/edit/{id}', [ClubInformationController::class, 'edit'])->name('backend.club-information.edit');
+        Route::put('/update/{id}', [ClubInformationController::class, 'update'])->name('backend.club-information.update');
+        Route::get('/view/{id}', [ClubInformationController::class, 'view'])->name('backend.club-information.view');
+        Route::get('/add-panel-member/{id}', [ClubInformationController::class, 'addPanelMember'])->name('backend.club-information.add-panel-member');
+        Route::post('/store-panel-member/{id}', [ClubInformationController::class, 'storePanelMember'])->name('backend.club-information.store-panel-member');
+        Route::delete('/delete/{id}', [ClubInformationController::class, 'delete'])->name('backend.club-information.destroy');
+
       });
 
 
