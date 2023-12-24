@@ -41,7 +41,7 @@ class LabInformationController extends Controller
                 ->withErrors($validator);
         }
 
-        $photo = null;
+        $photo = '';
 
         if ($request->hasFile('photo')) {
             $fileName = time().$request->file('photo')->getClientOriginalName();
@@ -50,19 +50,19 @@ class LabInformationController extends Controller
         }
 
         $labInfo = new LabInformation();
-        $labInfo->name = $request->input('lab_name');
-        $labInfo->room_no = $request->input('room_no');
-        $labInfo->photo = $photo;
+        $labInfo->lab_information_name = $request->input('lab_name');
+        $labInfo->lab_information_room_no = $request->input('room_no');
+        $labInfo->lab_information_photo = $photo;
         $labInfo->save();
 
-        flash()->addSuccess('Lab In formation Added Successfully');
+        flash()->addSuccess('Lab Information Added Successfully');
 
         // Notify the user of a successful operation
-        return redirect()->route('backend.lab-info.create');
+        return redirect()->route('backend.lab-information.create');
     }
 
     public function edit(Request $request, $id) {
-        $data = LabInformation::where('uuid', $id)->first();
+        $data = LabInformation::where('lab_information_uuid', $id)->first();
         return view('backend.lab-information.edit', compact('data'));
     }
 
@@ -84,45 +84,49 @@ class LabInformationController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'lab_name' => ['required'],
-            'room_no' => ['required'],
-            'photo' => ['nullable', 'file'],
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'lab_name' => ['required'],
+        'room_no' => ['required'],
+        'photo' => ['nullable', 'file'],
+    ]);
 
-        if ($validator->fails()) {
-            // Notify the user of validation errors
-            return redirect()->route('backend.lab-info')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        // Find the existing TAInformation record by its ID
-        $labInfo = LabInformation::where('uuid', $id)->first();
-
-        if (!$labInfo) {
-            flash()->addError('Lab Information Not Found');
-        }
-
-        // Update the fields with the new data
-        $labInfo->name = $request->input('lab_name');
-        $labInfo->room_no = $request->input('room_no');
-
-        if ($request->hasFile('photo')) {
-            $fileName = time().$request->file('photo')->getClientOriginalName();
-            $path = $request->file('photo')->storeAs('images', $fileName, 'public');
-            $photo = '/storage/'.$path;
-            $labInfo->photo = $photo;
-        }
-        $labInfo->save(); // Save the updated data
-
-        // Redirect or respond with a success message
-        flash()->addSuccess('Lab Information Updated Successfully');
-
-        // Notify the user of a successful operation
-        return redirect()->route('backend.lab-info');
+    if ($validator->fails()) {
+        // Notify the user of validation errors
+        return redirect()->route('backend.lab-info')
+            ->withInput()
+            ->withErrors($validator);
     }
+
+    // Find the existing LabInformation record by its ID
+    $labInfo = LabInformation::where('lab_information_uuid', $id)->first();
+
+    if (!$labInfo) {
+        flash()->addError('Lab Information Not Found');
+        return redirect()->route('backend.lab-information');
+    }
+
+    // Update the fields with the new data
+    $labInfo->lab_information_name = $request->input('lab_name');
+    $labInfo->lab_information_room_no = $request->input('room_no');
+
+    if ($request->hasFile('photo')) {
+        $fileName = time().$request->file('photo')->getClientOriginalName();
+        $path = $request->file('photo')->storeAs('images', $fileName, 'public');
+        $photo = '/storage/'.$path;
+        $labInfo->lab_information_photo = $photo;
+    }
+
+    // Save the updated data
+    $labInfo->save();
+
+    // Redirect or respond with a success message
+    flash()->addSuccess('Lab Information Updated Successfully');
+
+    // Notify the user of a successful operation
+    return redirect()->route('backend.lab-information');
+}
+
 
     public function officeHour(Request $request, $id)
     {
@@ -186,5 +190,10 @@ class LabInformationController extends Controller
 
         // Notify the user of a successful operation
         return redirect()->route('backend.lab-information.view', ['id' => $id]);
+    }
+
+    public function delete($id) {
+        LabInformation::where('lab_information_uuid', $id)->delete();
+        return back();
     }
 }

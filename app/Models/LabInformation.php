@@ -12,7 +12,7 @@ class LabInformation extends Model
     use HasFactory;
 
     protected $table = 'lab_information';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'lab_information_id';
 
     protected $fillable = [
         'lab_information_uuid',
@@ -36,7 +36,7 @@ class LabInformation extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->uuid = (string) Str::orderedUuid();
+            $model->lab_information_uuid = (string) Str::orderedUuid();
             $model->created_by = auth()->user()->id;
         });
 
