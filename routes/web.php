@@ -67,6 +67,7 @@ Route::prefix('dashboard')->group(function () {
          Route::get('/create', [TAInformationsController::class, 'create'])->name('backend.ta-information.create');
          Route::get('/edit/{id}', [TAInformationsController::class, 'edit'])->name('backend.ta-information.edit');
          Route::put('/edit/{id}', [TAInformationsController::class, 'update'])->name('backend.ta-information.edit');
+         Route::delete('/delete/{id}', [TAInformationsController::class, 'delete'])->name('backend.ta-information.destroy');
          Route::get('/view/{id}', [TAInformationsController::class, 'view'])->name('backend.ta-information.view');
          Route::get('/office-hour/{id}', [TAInformationsController::class, 'officeHour'])->name('backend.ta-information.office-hour');
          Route::post('/office-hour/{id}', [TAInformationsController::class, 'postOfficeHour'])->name('backend.ta-information.office-hour');
@@ -78,10 +79,13 @@ Route::prefix('dashboard')->group(function () {
        * Alumni Network
        */
 
-      Route::prefix('alumni')->group(function(){
-        Route::get('/', [AlumniController::class, 'index'])->name('backend.alumin');
-        Route::get('/create', [AlumniController::class, 'create'])->name('backend.alumin.create');
-        Route::post('/create', [AlumniController::class, 'store'])->name('backend.alumin');
+      Route::prefix('alumni-information')->group(function(){
+        Route::get('/', [AlumniController::class, 'index'])->name('backend.alumni-information');
+        Route::post('/store', [AlumniController::class, 'store'])->name('backend.alumni-information.store');
+        Route::get('/create', [AlumniController::class, 'create'])->name('backend.alumni-information.create');
+        Route::get('/edit/{id}', [AlumniController::class, 'edit'])->name('backend.alumni-information.edit');
+        Route::put('/update/{id}', [AlumniController::class, 'update'])->name('backend.alumni-information.update');
+        Route::delete('/delete/{id}', [AlumniController::class, 'delete'])->name('backend.alumni-information.destroy');
       });
 
       /**
