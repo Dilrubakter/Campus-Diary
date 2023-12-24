@@ -48,7 +48,7 @@ class TAInformationsController extends Controller
                 ->withErrors($validator);
         }
 
-        $photo = null;
+        $photo = '';
 
         if ($request->hasFile('photo')) {
             $fileName = time().$request->file('photo')->getClientOriginalName();
@@ -58,15 +58,15 @@ class TAInformationsController extends Controller
 
         // Create a new TAInformations instance and save it to the database
         $taInfo = new TAInformations();
-        $taInfo->first_name = $request->input('first_name');
-        $taInfo->last_name = $request->input('last_name');
-        $taInfo->email = $request->input('email');
-        $taInfo->phone_no = $request->input('phone');
-        $taInfo->designations = $request->input('designation');
-        $taInfo->dob = $request->input('dob');
-        $taInfo->contact = $request->input('contact');
-        $taInfo->gender = $request->input('gender');
-        $taInfo->photo = $photo;
+        $taInfo->ta_informations_first_name = $request->input('first_name');
+        $taInfo->ta_informations_last_name = $request->input('last_name');
+        $taInfo->ta_informations_semail = $request->input('email');
+        $taInfo->ta_informations_phone_no = $request->input('phone');
+        $taInfo->ta_informations_designations = $request->input('designation');
+        $taInfo->ta_informations_dob = $request->input('dob');
+        $taInfo->ta_informations_contact = $request->input('contact');
+        $taInfo->ta_informations_gender = $request->input('gender');
+        $taInfo->ta_informations_photo = $photo;
         $taInfo->save();
 
         flash()->addSuccess('TA Added Successfully');
@@ -78,7 +78,7 @@ class TAInformationsController extends Controller
     public function edit (Request $request, $id)
     {
 
-        $data = TAInformations::where('uuid', $id)->first();
+        $data = TAInformations::where('ta_informations_uuid', $id)->first();
 
         return view('backend.ta-information.edit', compact('data'));
 
@@ -105,28 +105,28 @@ class TAInformationsController extends Controller
         }
 
         // Find the existing TAInformation record by its ID
-        $taInfo = TAInformations::where('uuid', $id)->first();
+        $taInfo = TAInformations::where('ta_informations_uuid', $id)->first();
 
         if (!$taInfo) {
             flash()->addError('TA Not Found');
         }
 
         // Update the fields with the new data
-        $taInfo->first_name = $request->input('first_name');
-        $taInfo->last_name = $request->input('last_name');
-        $taInfo->email = $request->input('email');
-        $taInfo->phone_no = $request->input('phone');
-        $taInfo->designations = $request->input('designation');
-        $taInfo->dob = $request->input('dob');
-        $taInfo->gender = $request->input('gender');
-        $taInfo->contact = $request->input('contact');
+        $taInfo->ta_informations_first_name = $request->input('first_name');
+        $taInfo->ta_informations_last_name = $request->input('last_name');
+        $taInfo->ta_informations_semail = $request->input('email');
+        $taInfo->ta_informations_phone_no = $request->input('phone');
+        $taInfo->ta_informations_designations = $request->input('designation');
+        $taInfo->ta_informations_dob = $request->input('dob');
+        $taInfo->ta_informations_gender = $request->input('gender');
+        $taInfo->ta_informations_contact = $request->input('contact');
 
 
         if ($request->hasFile('photo')) {
             $fileName = time().$request->file('photo')->getClientOriginalName();
             $path = $request->file('photo')->storeAs('images', $fileName, 'public');
             $photo = '/storage/'.$path;
-            $taInfo->photo = $photo;
+            $taInfo->ta_informations_photo = $photo;
         }
         $taInfo->save(); // Save the updated data
 
@@ -219,23 +219,13 @@ class TAInformationsController extends Controller
         return redirect()->route('backend.ta-information.view', ['id' => $id]);
     }
 
+    public function delete($id) {
+        TAInformations::where('ta_informations_uuid', $id)->delete();
+        flash()->addSuccess('Ta Information Deleted Successfully');
+        return back();
+    }
 
 
-    // public function checkResponse()
-    // {
-    //     $id = '9add31e6-6831-437c-82a7-6842f6ad775c';
-    //     // $data = TAInformations::where('uuid', $id)->first();
-    //     $data = TAInformations::with([
-    //         'personOfficeHour',
-    //         'personOfficeHour.day',
-    //         'personOfficeHour.day.officeHour'
-    //     ])
-    //     ->where('ta_informations_uuid', $id)
-    //     ->first();
-
-    
-    //     return response()->json($data);
-    // }
     public function checkResponse()
     {
         $id = '9add31e6-6831-437c-82a7-6842f6ad775c';
