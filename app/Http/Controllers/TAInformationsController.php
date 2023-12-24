@@ -37,7 +37,7 @@ class TAInformationsController extends Controller
             'designation' => ['required'],
             'dob' => ['nullable'],
             'gender' => ['required'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
             'contact' => ['nullable']
         ]);
 
@@ -95,7 +95,7 @@ class TAInformationsController extends Controller
             'dob' => ['nullable'],
             'contact' => ['nullable'],
             'gender' => ['required'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {

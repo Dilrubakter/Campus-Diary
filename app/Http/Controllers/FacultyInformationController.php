@@ -33,7 +33,7 @@ class FacultyInformationController extends Controller
             'gender' => ['required'],
             'dob' => ['nullable'],
             'bio' => ['nullable'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -91,7 +91,7 @@ class FacultyInformationController extends Controller
             'gender' => ['required'],
             'dob' => ['nullable'],
             'bio' => ['nullable'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {

@@ -31,7 +31,7 @@ class LabInformationController extends Controller
         $validator = Validator::make($request->all(), [
             'lab_name' => ['required'],
             'room_no' => ['required'],
-            'photo' => ['nullable', 'file'],
+            'photo' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -88,7 +88,7 @@ class LabInformationController extends Controller
     $validator = Validator::make($request->all(), [
         'lab_name' => ['required'],
         'room_no' => ['required'],
-        'photo' => ['nullable', 'file'],
+        'photo' => ['nullable'],
     ]);
 
     if ($validator->fails()) {

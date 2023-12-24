@@ -32,7 +32,7 @@ class AlumniController extends Controller
             'current_working_company' => ['nullable'],
             'current_location' => ['required'],
             'linkedin_profile_link' => ['required'],
-            'photo' => ['nullable', 'file']
+            'photo' => ['nullable']
         ]);
 
         if ($validator->fails()) {
@@ -77,7 +77,7 @@ class AlumniController extends Controller
             'current_working_company' => ['nullable'],
             'current_location' => ['required'],
             'linkedin_profile_link' => ['required'],
-            'photo' => ['nullable', 'file']
+            'photo' => ['nullable']
         ]);
 
         if ($validator->fails()) {
