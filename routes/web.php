@@ -109,16 +109,16 @@ Route::prefix('dashboard')->group(function () {
        */
 
 
-      // Route::prefix('faculty-information')->group(function(){
-      //   Route::get('/', [FacultyInformationController::class, 'index'])->name('backend.faculty-information');
-      //   Route::get('/create', [LabInformationController::class, 'create'])->name('backend.lab-information.create');
-      //   Route::post('/', [LabInformationController::class, 'store'])->name('backend.lab-information');
-      //   Route::get('/edit/{id}', [LabInformationController::class, 'edit'])->name('backend.lab-information.edit');
-      //   Route::put('/edit/{id}', [LabInformationController::class, 'update'])->name('backend.lab-information.edit');
-      //   Route::get('/view/{id}', [LabInformationController::class, 'view'])->name('backend.lab-information.view');
-      //   Route::get('/office-hour/{id}', [LabInformationController::class, 'officeHour'])->name('backend.lab-information.office-hour');
-      //   Route::post('/office-hour/{id}', [LabInformationController::class, 'postOfficeHour'])->name('backend.lab-information.office-hour');
-      // });
+      Route::prefix('faculty-information')->group(function(){
+        Route::get('/', [FacultyInformationController::class, 'index'])->name('backend.faculty-information');
+        Route::get('/create', [FacultyInformationController::class, 'create'])->name('backend.faculty-information.create');
+        Route::post('/store', [FacultyInformationController::class, 'store'])->name('backend.faculty-information.store');
+        Route::get('/edit/{id}', [FacultyInformationController::class, 'edit'])->name('backend.faculty-information.edit');
+        Route::put('/update/{id}', [FacultyInformationController::class, 'update'])->name('backend.faculty-information.update');
+        Route::get('/view/{id}', [FacultyInformationController::class, 'view'])->name('backend.faculty-information.view');
+        Route::get('/office-hour/{id}', [FacultyInformationController::class, 'officeHour'])->name('backend.faculty-information.office-hour');
+        Route::post('/office-hour/{id}', [FacultyInformationController::class, 'postOfficeHour'])->name('backend.faculty-information.office-hour');
+      });
 
 
 });
