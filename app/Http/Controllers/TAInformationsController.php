@@ -143,7 +143,9 @@ class TAInformationsController extends Controller
         $data = TAInformations::with([
             'personOfficeHour',
             'personOfficeHour.day',
-            'personOfficeHour.day.officeHour'
+            'personOfficeHour.day.officeHour'=> function ($query) use ($id) {
+                $query->where('office_hours_persons_uuid', $id);
+            }
         ])
         ->where('ta_informations_uuid', $id)
         ->first();

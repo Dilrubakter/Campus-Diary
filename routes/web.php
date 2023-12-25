@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TimeScheduleController;
@@ -36,7 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::prefix('dashboard')->group(function () {
+Route::prefix('dashboard')-> middleware('auth')->group(function () {
 
     /**
      * Admin Settings >> Time Schedule Routes
@@ -140,6 +141,8 @@ Route::prefix('dashboard')->group(function () {
 
 
 });
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 require __DIR__.'/auth.php';
  
