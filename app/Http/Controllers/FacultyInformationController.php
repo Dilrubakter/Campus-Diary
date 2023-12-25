@@ -140,7 +140,9 @@ class FacultyInformationController extends Controller
         $data = FacultyInformation::with([
             'personOfficeHour',
             'personOfficeHour.day',
-            'personOfficeHour.day.facultyOfficeHour'
+            'personOfficeHour.day.facultyOfficeHour' => function ($query) use ($id) {
+                $query->where('faculty_offie_hour_lab_uuid', $id);
+            }
         ])
         ->where('faculty_informations_uuid', $id)
         ->first();

@@ -71,12 +71,12 @@ class LabInformationController extends Controller
         $data = LabInformation::with([
             'personOfficeHour',
             'personOfficeHour.day',
-            'personOfficeHour.day.labOfficeHour'
+            'personOfficeHour.day.labOfficeHour' => function ($query) use ($id) {
+                $query->where('lab_offie_hour_lab_uuid', $id);
+            }
         ])
         ->where('lab_information_uuid', $id)
         ->first();
-    
-        // dd($data->toJson(JSON_PRETTY_PRINT));
 
         return view('backend.lab-information.view-lab', [
             'data' => $data->toJson(JSON_PRETTY_PRINT)
@@ -134,7 +134,7 @@ class LabInformationController extends Controller
         $day = Day::all();
         $time = TimeSchedule::all();
 
-        return view('backend.ta-information.office-hour', compact('data', 'day', 'time'));
+        return view('backend.lab-information.office-hour', compact('data', 'day', 'time'));
     }
 
 
