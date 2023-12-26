@@ -11,6 +11,7 @@ use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
 use App\Http\Controllers\ClubInformationController;
 use App\Http\Controllers\FacultyInformationController;
+use App\Http\Controllers\MarketPlaceCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,6 +141,19 @@ Route::prefix('dashboard')->middleware(['auth', 'admin'])->group(function () {
 
       });
 
+      /**
+       * MarketPlace Information
+       */
+
+       Route::prefix('marketplace')->group(function () {
+          Route::get('/category', [MarketPlaceCategoryController::class, 'index'])->name('backend.marketplace.category');
+          Route::get('/category/create', [MarketPlaceCategoryController::class, 'create'])->name('backend.marketplace.category.create');
+          Route::post('/category/store', [MarketPlaceCategoryController::class, 'store'])->name('backend.marketplace.category.store');
+          Route::get('/category/edit/{id}', [MarketPlaceCategoryController::class, 'edit'])->name('backend.marketplace.category.edit');
+          Route::post('/category/update/{id}', [MarketPlaceCategoryController::class, 'update'])->name('backend.marketplace.category.update');
+          Route::delete('/delete/{id}', [MarketPlaceCategoryController::class, 'delete'])->name('backend.marketplace.category.destroy');
+        // Route
+       });
 
 });
 
@@ -156,6 +170,19 @@ Route::middleware('auth')->group(function() {
     Route::get('/add-post', [PostController::class, 'create'])->name('addPost');
     Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
    });
+
+   /**
+   * marketplace
+   */
+
+
+   Route::prefix('/marketplace')->group(function() {
+    Route::get('/', [PostController::class, 'index'])->name('posts');
+    Route::get('/add-post', [PostController::class, 'create'])->name('addPost');
+    Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
+   });
+
+
 });
 
 
