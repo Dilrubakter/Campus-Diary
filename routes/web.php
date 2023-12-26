@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TimeScheduleController;
@@ -28,7 +29,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::prefix('dashboard')-> middleware('auth')->group(function () {
+Route::prefix('dashboard')->middleware(['auth', 'admin'])->group(function () {
 
     /**
      * Admin Settings >> Time Schedule Routes
@@ -142,7 +143,22 @@ Route::prefix('dashboard')-> middleware('auth')->group(function () {
 
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/data-logout', [HomeController::class, 'logout'])->name('logout');
+Route::middleware('auth')->group(function() {
+  Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+  /**
+   * post
+   */
+
+   Route::prefix('/posts')->group(function() {
+    Route::get('/', [PostController::class, 'index'])->name('posts');
+    Route::get('/add-post', [PostController::class, 'create'])->name('addPost');
+    Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
+   });
+});
+
+
 
 require __DIR__.'/auth.php';
  
