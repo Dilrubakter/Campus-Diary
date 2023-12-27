@@ -175,14 +175,19 @@ Route::middleware('auth')->group(function() {
    /**
    * marketplace
    */
-
-
    Route::prefix('/marketplace')->group(function() {
-    Route::get('/', [\App\Http\Controllers\MarketPlaceController::class, 'index'])->name('marketplace');
+      Route::get('/', [\App\Http\Controllers\MarketPlaceController::class, 'index'])->name('marketplace');
+      Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
+      Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
+   });
+   /**
+   * profile
+   */
+  Route::prefix('/profile')->group(function() {
+    Route::get('/{id}', [\App\Http\Controllers\FrontendProfileController::class, 'index'])->name('profile');
     Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
     Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
-   });
-
+ });
 
 });
 

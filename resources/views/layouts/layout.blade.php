@@ -76,7 +76,7 @@
                                         <option data-icon="flag flag-us">English US</option>
                                     </select>
                                 </li>
-
+                                <li><a href="{{ route('profile', ['id' => auth()->user()->id]) }}">Profile</a></li>
                                 @if (auth()->user()->is_admin)
                                     <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                                 @endif

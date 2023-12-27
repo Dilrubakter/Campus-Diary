@@ -88,7 +88,9 @@
                                                                         class="fa fa-envelope"></i>
                                                                     {{ $marketplace['users']['email'] }}</a>
                                                             </li>
-                                                            <li><a href=""><i class="fa fa-user"></i>
+                                                            <li><a
+                                                                    href="{{ route('profile', ['id' => $marketplace['users']['id']]) }}"><i
+                                                                        class="fa fa-user"></i>
                                                                     {{ $marketplace['users']['name'] }}</a>
                                                             </li>
                                                         </ul>
