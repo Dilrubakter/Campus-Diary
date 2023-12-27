@@ -138,29 +138,59 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 heading-bx left">
-                            <h2 class="title-head">Posts</h2>
-                            <p>Engage with peers, join forums, and participate in discussions.</p>
+                            <h2 class="title-head">Products</h2>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                            <div class="item">
+                        @foreach ($marketplaces as $marketplace)
+                            <div class="col-md-4 col-lg-4 col-sm-6 m-b30">
                                 <div class="cours-bx">
-                                    <div class="action-box">
-                                        <img src="assets/images/courses/pic1.jpg" alt="">
+                                    <div class="action-box img">
+                                        @if ($marketplace['marketplace_product_photo'])
+                                            <img class="cover" src="{{ $marketplace['marketplace_product_photo'] }}"
+                                                alt="">
+                                        @else
+                                            <img class="cover" src="{{ asset('assets/images/blank.png') }}"
+                                                alt="">
+                                        @endif
                                     </div>
-                                    <div class="info-bx text-center">
-                                        <h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-                                        <span>Programming</span>
+                                    <div class="text-bx pt-4 text-center">
+                                        <h6>{{ $marketplace['marketplace_product_name'] }}</h6>
                                     </div>
+                                    <div class="text-bx text-center">
+                                        <span>{{ $marketplace['marketplace_product_description'] }}</span>
+                                    </div>
+                                    @if ($marketplace['category'] != null)
+                                        <div class="text-bx text-center pt-10">
+                                            <span class="">
+                                                {{ $marketplace['category']['marketplace_category_name'] }}</p
+                                                    class="text-">
+                                        </div>
+                                    @endif
                                     <div class="cours-more-info">
-                                        <div class="price">
-                                            <h5>$120</h5>
+                                        <div style="width: 100%">
+                                            <div class="event-info">
+                                                <ul class="media-post py-3 d-flex justify-content-between px-3">
+                                                    <li><a href="mailto:{{ $marketplace['users']['email'] }}"><i
+                                                                class="fa fa-envelope"></i>
+                                                            {{ $marketplace['users']['email'] }}</a>
+                                                    </li>
+                                                    <li><a
+                                                            href="{{ route('profile', ['id' => $marketplace['users']['id']]) }}"><i
+                                                                class="fa fa-user"></i>
+                                                            {{ $marketplace['users']['name'] }}</a>
+                                                    </li>
+                                                </ul>
+                                                <h5 style="text-align: center">$120</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
+                    </div>
+                    <div class="text-center">
+                        <a href="{{ route('marketplace') }}" class="btn">View Proucts</a>
                     </div>
                 </div>
             </div>
@@ -176,41 +206,50 @@
                     </div>
                     <div class="row">
                         <div class="upcoming-event-carousel owl-carousel owl-btn-center-lr owl-btn-1 col-12 p-lr0  m-b30">
-                            <div class="item">
-                                <div class="event-bx">
-                                    <div class="action-box">
-                                        <img src="assets/images/event/pic4.jpg" alt="">
-                                    </div>
-                                    <div class="info-bx d-flex">
-                                        <div>
-                                            <div class="event-time">
-                                                <div class="event-date">29</div>
-                                                <div class="event-month">October</div>
-                                            </div>
+                            @foreach ($posts as $post)
+                                <div class="item">
+                                    <div class="event-bx">
+                                        <div class="bg-warning py-2 px-3" style="display: inline-block">Lost</div>
+                                        <div class="action-box">
+                                            @if ($post['post_product_photo'])
+                                                <img src="{{ $post['post_product_photo'] }}" alt="">
+                                            @endif
                                         </div>
-                                        <div class="event-info">
-                                            <h4 class="event-title"><a href="#">Education Autumn Tour
-                                                    2019</a></h4>
-                                            <ul class="media-post">
-                                                <li><a href="#"><i class="fa fa-clock-o"></i> 7:00am
-                                                        8:00am</a></li>
-                                                <li><a href="#"><i class="fa fa-map-marker"></i> Berlin,
-                                                        Germany</a></li>
-                                            </ul>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry. Lorem Ipsum has been the industry's standard dummy text
-                                                ever since the..</p>
+                                        <div class="info-bx d-flex">
+                                            @php
+                                                $createdAt = \Carbon\Carbon::parse($post['created_at']);
+                                                $formattedDate = $createdAt->format('d'); // Get day of the month
+                                                $formattedMonth = $createdAt->format('F'); // Get full month name
+                                                $formattedTime = $createdAt->format('h:ia'); // Get time in 12-hour format
+                                            @endphp
+                                            <div>
+                                                <div class="event-time">
+                                                    <div class="event-date">{{ $formattedDate }}</div>
+                                                    <div class="event-month">{{ $formattedMonth }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="event-info">
+                                                <ul class="media-post">
+                                                    <li><a href="#"><i class="fa fa-clock-o"></i>
+                                                            {{ $formattedTime }}</a>
+                                                    </li>
+                                                    <li><a href="{{ route('profile', ['id' => $post['users']['id']]) }}"><i
+                                                                class="fa fa-user"></i>
+                                                            {{ $post['users']['name'] }}</a>
+                                                    </li>
+                                                </ul>
+                                                <p>{{ $post['post_post_description'] }}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
+
                         </div>
                     </div>
                     <div class="text-center">
                         <a href="{{ route('posts') }}" class="btn">View All Posts</a>
-                    </div>
-                    <div class="text-center">
-                        <a href="{{ route('marketplace') }}" class="btn">View Proucts</a>
                     </div>
                 </div>
             </div>

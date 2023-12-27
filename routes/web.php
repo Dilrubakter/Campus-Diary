@@ -8,6 +8,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MarketPlaceController;
 use App\Http\Controllers\TimeScheduleController;
+use App\Http\Controllers\FrontendAlumniController;
 use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
 use App\Http\Controllers\ClubInformationController;
@@ -188,6 +189,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
     Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
  });
+
+ Route::get('/alumni', [FrontendAlumniController::class, 'index'])->name('alumni');
 
 });
 

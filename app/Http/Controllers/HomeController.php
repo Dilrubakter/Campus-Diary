@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumni;
+use App\Models\MaketPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,11 @@ class HomeController extends Controller
     function index() {
 
         $alumni = Alumni::take(3)->get();
-        return view('frontend.index', compact('alumni'));
+        $posts = \App\Models\Post::take(3)->get(); 
+        $marketplaces = MaketPlace::with(['users', 'category'])
+        ->orderBy('created_at', 'desc')
+        ->take(6)->get();
+        return view('frontend.index', compact('alumni', 'posts', 'marketplaces'));
     }   
 
     public function logout()
