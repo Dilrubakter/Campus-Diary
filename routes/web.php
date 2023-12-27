@@ -12,6 +12,7 @@ use App\Http\Controllers\FrontendAlumniController;
 use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
 use App\Http\Controllers\ClubInformationController;
+use App\Http\Controllers\FrontendFacultyController;
 use App\Http\Controllers\FacultyInformationController;
 use App\Http\Controllers\MarketPlaceCategoryController;
 
@@ -191,6 +192,8 @@ Route::middleware('auth')->group(function() {
  });
 
  Route::get('/alumni', [FrontendAlumniController::class, 'index'])->name('alumni');
+ Route::get('/faculty', [FrontendFacultyController::class, 'index'])->name('faculty');
+ Route::get('/faculty/view/{id}', [FrontendFacultyController::class, 'view'])->name('faculty.view');
 
 });
 
