@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FrontendTAController;
 use App\Http\Controllers\MarketPlaceController;
 use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\FrontendAlumniController;
@@ -194,6 +195,9 @@ Route::middleware('auth')->group(function() {
  Route::get('/alumni', [FrontendAlumniController::class, 'index'])->name('alumni');
  Route::get('/faculty', [FrontendFacultyController::class, 'index'])->name('faculty');
  Route::get('/faculty/view/{id}', [FrontendFacultyController::class, 'view'])->name('faculty.view');
+
+ Route::get('ta-info', [FrontendTAController::class, 'index'])->name('ta-list');
+ Route::get('/ta-info/view/{id}', [FrontendTAController::class, 'view'])->name('ta-info.view');
 
 });
 
