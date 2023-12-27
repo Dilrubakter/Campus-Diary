@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MarketPlaceController;
 use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
@@ -30,7 +31,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -177,9 +178,9 @@ Route::middleware('auth')->group(function() {
 
 
    Route::prefix('/marketplace')->group(function() {
-    Route::get('/', [PostController::class, 'index'])->name('posts');
-    Route::get('/add-post', [PostController::class, 'create'])->name('addPost');
-    Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
+    Route::get('/', [\App\Http\Controllers\MarketPlaceController::class, 'index'])->name('marketplace');
+    Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
+    Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
    });
 
 

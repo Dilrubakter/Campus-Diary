@@ -75,14 +75,16 @@
                                                 <div class="event-month">{{ $formattedMonth }}</div>
                                             </div>
                                             <div class="event-info">
-                                                <ul class="media-post">
-                                                    <li><a href="#"><i class="fa fa-clock-o"></i>
-                                                            {{ $formattedTime }}</a>
-                                                    </li>
-                                                    <li><a href=""><i class="fa fa-user"></i>
-                                                            {{ $post['users']['name'] }}</a>
-                                                    </li>
-                                                </ul>
+                                                @if ($post['users']['name'])
+                                                    <ul class="media-post">
+                                                        <li><a href="#"><i class="fa fa-clock-o"></i>
+                                                                {{ $formattedTime }}</a>
+                                                        </li>
+                                                        <li><a href=""><i class="fa fa-user"></i>
+                                                                {{ $post['users']['name'] }}</a>
+                                                        </li>
+                                                    </ul>
+                                                @endif
                                                 <p>{{ $post['post_post_description'] }}
                                                 </p>
                                             </div>

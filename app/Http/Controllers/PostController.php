@@ -13,6 +13,7 @@ class PostController extends Controller
                 // ->where('created_by', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
+                
         return view('frontend.posts.posts', [
             'data' => $data
         ]);

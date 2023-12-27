@@ -209,6 +209,9 @@
                     <div class="text-center">
                         <a href="{{ route('posts') }}" class="btn">View All Posts</a>
                     </div>
+                    <div class="text-center">
+                        <a href="{{ route('marketplace') }}" class="btn">View Proucts</a>
+                    </div>
                 </div>
             </div>
             <!-- Form -->
