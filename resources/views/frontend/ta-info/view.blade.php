@@ -9,7 +9,7 @@
         <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">Faculty View</h1>
+                    <h1 class="text-white">TA Info View</h1>
                 </div>
             </div>
         </div>
