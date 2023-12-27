@@ -6,7 +6,7 @@
         <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">Faculty</h1>
+                    <h1 class="text-white">Posts</h1>
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
                 <div class="d-flex justify-content-between">
                     <ul class="list-inline d-flex  align-items-center">
                         <li><a href="{{ route('home') }}">Home</a></li>
-                        <li>TA List</li>
+                        <li>Alumni</li>
                     </ul>
                 </div>
             </div>
@@ -31,15 +31,16 @@
             <div class="section-area section-sp1 gallery-bx">
                 <div class="container">
                     <div class="row ">
-                        @foreach ($data as $ta)
+                        @foreach ($data as $club)
                             <div class="col-md-4 col-sm-6">
                                 <div class="card-container">
-                                    <img class="round" src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                                    <img class="round"
+                                        src="{{ $club['club_information_photo'] ? $club['club_information_photo'] : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4p3fXniF8kGykrPWxi2NAZQS5gFojmFB8RQ&usqp=CAU' }}"
                                         alt="user" />
-                                    <h3>{{ $ta['ta_informations_first_name'] }} {{ $ta['ta_informations_last_name'] }}</h3>
-                                    <h6>{{ $ta['ta_informations_designations'] }}</h6>
+                                    <h3>{{ $club['club_information_name'] }}</h3>
+                                    <h6>{{ $club['club_information_short_name'] }}</h6>
                                     <div class="buttons">
-                                        <a href="{{ route('ta-info.view', ['id' => $ta['ta_informations_uuid']]) }}"
+                                        <a href="{{ route('clubs.view', ['id' => $club['club_information_uuid']]) }}"
                                             class="btn ">
                                             View
                                         </a>
@@ -68,6 +69,7 @@
     </div>
     <!-- Content END-->
 @endsection
+
 <style>
     .card-container {
         background-color: #f9f9f9;

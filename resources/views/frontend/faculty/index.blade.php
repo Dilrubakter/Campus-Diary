@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         @endforeach
-                    </div>
+                    </div> --}}
                     <div class="pagination d-flex justify-items-end" style="gap: 2rem; justify-content: end">
                         @if ($data->onFirstPage())
                             <a href="javascript:void(0)" class="btn btn-secondary disabled">Previous</a>
@@ -105,7 +105,7 @@
                         @else
                             <a href="javascript:void(0)" class="btn btn-secondary disabled">Next</a>
                         @endif
-                    </div> --}}
+                    </div>
                 </div>
 
             </div>

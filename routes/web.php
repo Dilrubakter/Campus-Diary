@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendTAController;
 use App\Http\Controllers\FrontendLabController;
 use App\Http\Controllers\MarketPlaceController;
+use App\Http\Controllers\FrontendclubController;
 use App\Http\Controllers\TimeScheduleController;
 use App\Http\Controllers\FrontendAlumniController;
 use App\Http\Controllers\LabInformationController;
@@ -203,6 +204,12 @@ Route::middleware('auth')->group(function() {
 
  Route::get('lab-info', [FrontendLabController::class, 'index'])->name('lab-info');
  Route::get('/lab-info/view/{id}', [FrontendLabController::class, 'view'])->name('lab-info.view');
+
+
+ Route::get('clubs', [FrontendclubController::class, 'index'])->name('clubs');
+ Route::get('/clubs/view/{id}', [FrontendclubController::class, 'view'])->name('clubs.view');
+
+
 
 });
 
