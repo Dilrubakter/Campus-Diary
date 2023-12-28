@@ -17,7 +17,9 @@ class HomeController extends Controller
         $marketplaces = MaketPlace::with(['users', 'category'])
         ->orderBy('created_at', 'desc')
         ->take(6)->get();
-        return view('frontend.index', compact('alumni', 'posts', 'marketplaces'));
+        $taInfo = \App\Models\TAInformations::take(3)->get();
+        $faculty = \App\Models\FacultyInformation::take(3)->get();
+        return view('frontend.index', compact('alumni', 'posts', 'marketplaces', 'taInfo', 'faculty'));
     }   
 
     public function logout()

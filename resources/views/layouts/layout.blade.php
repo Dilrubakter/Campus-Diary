@@ -90,7 +90,7 @@
                     <div class="container clearfix">
                         <!-- Header Logo ==== -->
                         <div class="menu-logo">
-                            <a href="index.html"><img src="assets/images/logo-white.png" alt=""></a>
+                            <a href="{{ route('home') }}"><img src="assets/images/logo1.png" alt=""></a>
                         </div>
                         <!-- Mobile Nav Button ==== -->
                         <button class="navbar-toggler collapsed menuicon justify-content-end" type="button"
@@ -129,11 +129,8 @@
                                 <a href="index.html"><img src="assets/images/logo.png" alt=""></a>
                             </div>
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="javascript:;">Home <i class="fa fa-chevron-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="index.html">Home 1</a></li>
-                                        <li><a href="index-2.html">Home 2</a></li>
-                                    </ul>
+                                <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a
+                                        href="{{ route('home') }}">Home</a>
                                 </li>
                                 <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
                                     <ul class="sub-menu">
