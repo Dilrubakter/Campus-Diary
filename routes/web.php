@@ -3,13 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FrontendTAController;
+use App\Http\Controllers\FrontendLabController;
+use App\Http\Controllers\MarketPlaceController;
+use App\Http\Controllers\FrontendclubController;
 use App\Http\Controllers\TimeScheduleController;
+use App\Http\Controllers\FrontendAlumniController;
 use App\Http\Controllers\LabInformationController;
 use App\Http\Controllers\TAInformationsController;
 use App\Http\Controllers\ClubInformationController;
+use App\Http\Controllers\FrontendFacultyController;
 use App\Http\Controllers\FacultyInformationController;
+use App\Http\Controllers\MarketPlaceCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +36,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,7 +45,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::prefix('dashboard')-> middleware('auth')->group(function () {
+Route::prefix('dashboard')->middleware(['auth', 'admin'])->group(function () {
 
     /**
      * Admin Settings >> Time Schedule Routes
@@ -139,10 +147,73 @@ Route::prefix('dashboard')-> middleware('auth')->group(function () {
 
       });
 
+      /**
+       * MarketPlace Information
+       */
+
+       Route::prefix('marketplace')->group(function () {
+          Route::get('/category', [MarketPlaceCategoryController::class, 'index'])->name('backend.marketplace.category');
+          Route::get('/category/create', [MarketPlaceCategoryController::class, 'create'])->name('backend.marketplace.category.create');
+          Route::post('/category/store', [MarketPlaceCategoryController::class, 'store'])->name('backend.marketplace.category.store');
+          Route::get('/category/edit/{id}', [MarketPlaceCategoryController::class, 'edit'])->name('backend.marketplace.category.edit');
+          Route::post('/category/update/{id}', [MarketPlaceCategoryController::class, 'update'])->name('backend.marketplace.category.update');
+          Route::delete('/delete/{id}', [MarketPlaceCategoryController::class, 'delete'])->name('backend.marketplace.category.destroy');
+        // Route
+       });
 
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/data-logout', [HomeController::class, 'logout'])->name('logout');
+Route::middleware('auth')->group(function() {
+  Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+  /**
+   * post
+   */
+
+   Route::prefix('/posts')->group(function() {
+    Route::get('/', [PostController::class, 'index'])->name('posts');
+    Route::get('/add-post', [PostController::class, 'create'])->name('addPost');
+    Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
+   });
+
+   /**
+   * marketplace
+   */
+   Route::prefix('/marketplace')->group(function() {
+      Route::get('/', [\App\Http\Controllers\MarketPlaceController::class, 'index'])->name('marketplace');
+      Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
+      Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
+   });
+   /**
+   * profile
+   */
+  Route::prefix('/profile')->group(function() {
+    Route::get('/{id}', [\App\Http\Controllers\FrontendProfileController::class, 'index'])->name('profile');
+    Route::get('/add-product', [MarketPlaceController::class, 'create'])->name('marketplace.add-product');
+    Route::post('/store-post', [MarketPlaceController::class, 'store'])->name('marketplace.product.store');
+ });
+
+ Route::get('/alumni', [FrontendAlumniController::class, 'index'])->name('alumni');
+ Route::get('/faculty', [FrontendFacultyController::class, 'index'])->name('faculty');
+ Route::get('/faculty/view/{id}', [FrontendFacultyController::class, 'view'])->name('faculty.view');
+
+ Route::get('ta-info', [FrontendTAController::class, 'index'])->name('ta-list');
+ Route::get('/ta-info/view/{id}', [FrontendTAController::class, 'view'])->name('ta-info.view');
+
+
+ Route::get('lab-info', [FrontendLabController::class, 'index'])->name('lab-info');
+ Route::get('/lab-info/view/{id}', [FrontendLabController::class, 'view'])->name('lab-info.view');
+
+
+ Route::get('clubs', [FrontendclubController::class, 'index'])->name('clubs');
+ Route::get('/clubs/view/{id}', [FrontendclubController::class, 'view'])->name('clubs.view');
+
+
+
+});
+
+
 
 require __DIR__.'/auth.php';
  
